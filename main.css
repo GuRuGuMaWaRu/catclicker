@@ -1,0 +1,53 @@
+body, html {
+  height: 100%;
+}
+
+.title,
+.cat {
+  text-align: center;
+}
+
+.image {
+  width: 50%;
+  height: 50%;
+}
+
+#cat-list {
+  margin: 0 auto;
+}
+
+#cat-list img {
+  width: 100%;
+}
+
+.cat-image:hover {
+  background-color: lightgrey;
+}
+
+#cat {
+  text-align: center;
+}
+
+#cat img {
+  width: 60%;
+  height: 60%;
+}
+
+#admin {
+  text-align: left;
+  padding-top: 50px;
+}
+
+#admin ul {
+  list-style: none;
+  padding-left: 0;
+  padding-top: 20px;
+}
+
+#admin ul input {
+  width: 100%;
+}
+
+#admin-view {
+  opacity: 0;
+}
