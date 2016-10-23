@@ -44,24 +44,42 @@ $(function() {
       return JSON.parse(localStorage.cats);
     },
     setCurrentCat: function(catname) {
-      var cats = JSON.parse(localStorage.cats);
-
+      var cats = JSON.parse(localStorage.cats),
+          currentCat = this.currentCat;
+      // save current cat if it exists
+      if (currentCat) {
+        cats.map(function(cat) {
+          // console.log("cat.name:", cat.name);
+          // console.log("currentCat.name:", currentCat.name);
+          // console.log("cat.name === currentCat.name:", cat.name === currentCat.name);
+          if (cat.name === currentCat.name) {
+            console.log("cat:", cat);
+            console.log("currentCat:", currentCat);
+            cat = currentCat;
+            console.log("cat:", cat);
+            console.log("currentCat:", currentCat);
+          }
+        });
+        // save updated cats into localStorage
+        localStorage.cats = JSON.stringify(cats);
+      }
+      // set a new current cat
       this.currentCat = cats.filter(function(cat) {
         return cat.name === catname;
       })[0];
-    },
-    saveCurrentCat: function() {
-      var cats = JSON.parse(localStorage.cats),
-          currentCat = this.currentCat;
-
-      cats.map(function(cat) {
-        if (cat.name === currentCat.name) {
-          cat = currentCat;
-        }
-      });
-
-      localStorage.cats = JSON.stringify(cats);
     }
+    // saveCurrentCat: function() {
+    //   var cats = JSON.parse(localStorage.cats),
+    //       currentCat = this.currentCat;
+    //
+    //   cats.map(function(cat) {
+    //     if (cat.name === currentCat.name) {
+    //       cat = currentCat;
+    //     }
+    //   });
+    //
+    //   localStorage.cats = JSON.stringify(cats);
+    // }
   };
 
   octopus = {
@@ -86,7 +104,6 @@ $(function() {
     counter: function() {
       model.currentCat.clicks += 1;
 
-      model.saveCurrentCat();
       catView.render();
       adminView.render();
     },
