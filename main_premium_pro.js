@@ -45,26 +45,25 @@ $(function() {
     },
     setCurrentCat: function(catname) {
       var cats = JSON.parse(localStorage.cats),
+          newCats = cats,
           currentCat = this.currentCat;
+
       // save current cat if it exists
       if (currentCat) {
-        cats.map(function(cat) {
-          // console.log("cat.name:", cat.name);
-          // console.log("currentCat.name:", currentCat.name);
-          // console.log("cat.name === currentCat.name:", cat.name === currentCat.name);
+        // console.log(cats);
+        // console.log(currentCat);
+        newCats = cats.map(function(cat) {
           if (cat.name === currentCat.name) {
-            console.log("cat:", cat);
-            console.log("currentCat:", currentCat);
             cat = currentCat;
-            console.log("cat:", cat);
-            console.log("currentCat:", currentCat);
           }
         });
+        // console.log(cats);
+        // console.log(currentCat);
         // save updated cats into localStorage
-        localStorage.cats = JSON.stringify(cats);
+        localStorage.cats = JSON.stringify(newCats);
       }
       // set a new current cat
-      this.currentCat = cats.filter(function(cat) {
+      this.currentCat = newCats.filter(function(cat) {
         return cat.name === catname;
       })[0];
     }
@@ -127,7 +126,7 @@ $(function() {
       }
 
       model.setCurrentCat = cat;
-      model.saveCurrentCat();
+      // model.saveCurrentCat();
       catView.render();
       catListView.render();
       adminView.render();
