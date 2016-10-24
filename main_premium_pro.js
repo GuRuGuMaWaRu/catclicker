@@ -44,26 +44,27 @@ $(function() {
       return JSON.parse(localStorage.cats);
     },
     setCurrentCat: function(catname) {
-      var cats = JSON.parse(localStorage.cats),
-          newCats = cats,
-          currentCat = this.currentCat;
+      var cats = JSON.parse(localStorage.cats);
+      // console.log(localStorage.cats);
 
       // save current cat if it exists
-      if (currentCat) {
-        // console.log(cats);
-        // console.log(currentCat);
+      if (this.currentCat) {
+        var currentCat = this.currentCat,
+            newCats = cats;
+
         newCats = cats.map(function(cat) {
           if (cat.name === currentCat.name) {
-            cat = currentCat;
+            return currentCat;
+          } else {
+            return cat
           }
         });
-        // console.log(cats);
-        // console.log(currentCat);
         // save updated cats into localStorage
         localStorage.cats = JSON.stringify(newCats);
+        cats = newCats;
       }
       // set a new current cat
-      this.currentCat = newCats.filter(function(cat) {
+      this.currentCat = cats.filter(function(cat) {
         return cat.name === catname;
       })[0];
     }
