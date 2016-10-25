@@ -4,31 +4,37 @@ $(function() {
     currentCat: null,
     cats: [
       {
+        id: 0,
         name: 'Bublik',
         url: 'ex_3/cat_picture1.jpg',
         clicks: 0
       },
       {
+        id: 1,
         name: 'Doplik',
         url: 'ex_3/cat_picture2.jpeg',
         clicks: 0
       },
       {
+        id: 2,
         name: 'Rublik',
         url: 'ex_3/cat_picture3.jpeg',
         clicks: 0
       },
       {
+        id: 3,
         name: 'Musya',
         url: 'ex_3/cat_picture4.jpeg',
         clicks: 0
       },
       {
+        id: 4,
         name: 'Busya',
         url: 'ex_3/cat_picture5.jpeg',
         clicks: 0
       },
       {
+        id: 5,
         name: 'Burulkin',
         url: 'http://i1036.photobucket.com/albums/a444/Peter_Krevenets/bublik_zpsjqu3uydh.jpg',
         clicks: 0
@@ -43,49 +49,37 @@ $(function() {
     getCats: function() {
       return JSON.parse(localStorage.cats);
     },
-    setCurrentCat: function(catname) {
+    setCurrentCat: function(id) {
       var cats = JSON.parse(localStorage.cats);
-      // console.log(localStorage.cats);
-
       // save current cat if it exists
+
       if (this.currentCat) {
         var currentCat = this.currentCat,
             newCats = cats;
 
         newCats = cats.map(function(cat) {
-          if (cat.name === currentCat.name) {
+          if (cat.id === currentCat.id) {
             return currentCat;
           } else {
-            return cat
+            return cat;
           }
         });
+
         // save updated cats into localStorage
         localStorage.cats = JSON.stringify(newCats);
         cats = newCats;
       }
       // set a new current cat
       this.currentCat = cats.filter(function(cat) {
-        return cat.name === catname;
+        return cat.id === id;
       })[0];
     }
-    // saveCurrentCat: function() {
-    //   var cats = JSON.parse(localStorage.cats),
-    //       currentCat = this.currentCat;
-    //
-    //   cats.map(function(cat) {
-    //     if (cat.name === currentCat.name) {
-    //       cat = currentCat;
-    //     }
-    //   });
-    //
-    //   localStorage.cats = JSON.stringify(cats);
-    // }
   };
 
   octopus = {
     init: function() {
       model.init();
-      model.setCurrentCat('Bublik');
+      model.setCurrentCat(0);
       catView.init();
       catListView.init();
       adminView.init();
@@ -96,8 +90,8 @@ $(function() {
     getCurrentCat: function() {
       return model.currentCat;
     },
-    selectCat: function(catName) {
-      model.setCurrentCat(catName);
+    selectCat: function(id) {
+      model.setCurrentCat(id);
       catView.render();
       adminView.render();
     },
@@ -119,17 +113,14 @@ $(function() {
           newValue = event.target.value;
 
       if (event.target.id === "form-name") {
-        cat.name = newValue;
+        model.currentCat.name = newValue;
       } else if (event.target.id === "form-url") {
-        cat.url = newValue;
+        model.currentCat.url = newValue;
       } else if (event.target.id === "form-clicks") {
-        cat.clicks = newValue;
+        model.currentCat.clicks = newValue;
       }
 
-      model.setCurrentCat = cat;
-      // model.saveCurrentCat();
       catView.render();
-      catListView.render();
       adminView.render();
     }
   };
@@ -176,7 +167,7 @@ $(function() {
           return function() {
             octopus.selectCat(catCopy);
           };
-        })(cats[i].name));
+        })(cats[i].id));
         this.catListElement.appendChild(catItem);
       }
     }
