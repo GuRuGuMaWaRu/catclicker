@@ -91,13 +91,8 @@ $(function() {
       return model.currentCat;
     },
     selectCat: function(id) {
-      var element = document.querySelector(".selected")
-
-      if (element) {
-        element.classList.remove("selected");
-      }
-      event.target.classList.add("selected");
-
+      console.log(event.target.classList);
+      console.log(document.getElementById("cat-list").length);
 
       model.setCurrentCat(id);
       catView.render();
@@ -116,16 +111,15 @@ $(function() {
     adminViewDisplayed: function() {
       return model.showAdmin;
     },
-    changeCatListView: function(newName) {
-      console.log(document.querySelector(".selected").innerHTML);
-      document.querySelector(".selected").innerHTML = newName;
+    updateCatListView: function(newName) {
+      document.getElementById("selectedCat").innerHTML = newName;
     },
     changeCatDetails: function() {
       var cat = {},
           newValue = event.target.value;
 
       if (event.target.id === "form-name") {
-        this.changeCatListView(newValue);
+        this.updateCatListView(newValue);
         model.currentCat.name = newValue;
       } else if (event.target.id === "form-url") {
         model.currentCat.url = newValue;
@@ -167,8 +161,7 @@ $(function() {
       this.render();
     },
     render: function() {
-      var cats = octopus.getCats()
-          element = "";
+      var cats = octopus.getCats();
 
       // create a list of cats
       this.catListElement.innerHTML = "";
@@ -184,8 +177,6 @@ $(function() {
         })(cats[i].id));
         this.catListElement.appendChild(catItem);
       }
-      element = document.querySelector(".cat-image")[0];
-      element.classList.add("selected");
     }
   };
 
@@ -206,13 +197,12 @@ $(function() {
       this.formUrlElement.addEventListener("keyup", function() {
         octopus.changeCatDetails();
       });
+      this.formClicksElement.addEventListener("change", function() {
+        octopus.changeCatDetails();
+      });
       this.formClicksElement.addEventListener("keyup", function() {
         octopus.changeCatDetails();
       });
-      this.formClicksElement.addEventListener("update", function() {
-        octopus.changeCatDetails();
-      });
-
 
       this.render();
     },
