@@ -116,25 +116,19 @@ $(function() {
     adminViewDisplayed: function() {
       return model.showAdmin;
     },
-    changeCatListView: function(newName) {
-      console.log(document.querySelector(".selected").innerHTML);
-      document.querySelector(".selected").innerHTML = newName;
+    returnOriginalCatData: function() {
+      adminView.render();
     },
-    changeCatDetails: function() {
-      var cat = {},
-          newValue = event.target.value;
-
-      if (event.target.id === "form-name") {
-        this.changeCatListView(newValue);
-        model.currentCat.name = newValue;
-      } else if (event.target.id === "form-url") {
-        model.currentCat.url = newValue;
-      } else if (event.target.id === "form-clicks") {
-        model.currentCat.clicks = newValue;
-      }
+    saveCatData: function(catData) {
+      this.changeCatListView(catData.name);
+      model.currentCat.name = catData.name;
+      model.currentCat.url = catData.url;
+      model.currentCat.clicks = catData.clicks;
 
       catView.render();
-      adminView.render();
+    },
+    changeCatListView: function(newName) {
+      document.querySelector(".selected").innerHTML = newName;
     }
   };
 
@@ -184,7 +178,8 @@ $(function() {
         })(cats[i].id));
         this.catListElement.appendChild(catItem);
       }
-      element = document.querySelector(".cat-image")[0];
+      // highlight the first selected cat
+      element = document.getElementsByClassName("cat-image")[0];
       element.classList.add("selected");
     }
   };
@@ -192,6 +187,8 @@ $(function() {
   adminView = {
     init: function() {
       this.adminButtonElement = document.getElementById("admin-button");
+      this.cancelButtonElement = document.getElementById("cancel-button");
+      this.saveButtonElement = document.getElementById("save-button");
       this.adminViewElement = document.getElementById("admin-view");
       this.formNameElement = document.getElementById("form-name");
       this.formUrlElement = document.getElementById("form-url");
@@ -200,19 +197,18 @@ $(function() {
       this.adminButtonElement.addEventListener("click", function() {
         octopus.toggleAdminView();
       });
-      this.formNameElement.addEventListener("keyup", function() {
-        octopus.changeCatDetails();
+      this.cancelButtonElement.addEventListener("click", function() {
+        octopus.returnOriginalCatData();
       });
-      this.formUrlElement.addEventListener("keyup", function() {
-        octopus.changeCatDetails();
-      });
-      this.formClicksElement.addEventListener("keyup", function() {
-        octopus.changeCatDetails();
-      });
-      this.formClicksElement.addEventListener("update", function() {
-        octopus.changeCatDetails();
-      });
+      this.saveButtonElement.addEventListener("click", function() {
+        var catData = {
+          name: document.getElementById("form-name").value,
+          url: document.getElementById("form-url").value,
+          clicks: document.getElementById("form-clicks").value
+        };
 
+        octopus.saveCatData(catData);
+      });
 
       this.render();
     },

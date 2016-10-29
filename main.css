@@ -20,6 +20,10 @@ body, html {
   width: 100%;
 }
 
+.cat-image.selected {
+  background-color: #dedede;
+}
+
 .cat-image:hover {
   background-color: lightgrey;
 }
